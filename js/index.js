@@ -8,7 +8,6 @@ request.responseType = 'json';
 request.send();
 request.onload = function() {
     datas = request.response
-    // console.log(datas)
     if(began === false){
         drawResponse(datas)
     }
@@ -22,6 +21,7 @@ request.onload = function() {
             began = true
             addFilters(constraintName, constraintValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, constraintName, constraintValue)
+            console.log(personsToDraw)
             drawResponse(personsToDraw)
             // for(let filterNameCount = 1; filterNameCount <= Object.keys(filters).length; filterNameCount++){
             //     for(let filterValueCount = 1; filterValueCount <= Object.keys(filters.localisation).length; filterValueCount++){
@@ -35,9 +35,9 @@ request.onload = function() {
         } else {
             removeFilters(constraintName, constraintValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, constraintName, constraintValue)
+            console.log(personsToDraw)
             drawResponse(personsToDraw)
         }
-        // console.log(conditions)
     })
   }
 
@@ -57,6 +57,7 @@ function initCanvas() {
     c.fillRect( 0, 0, canvas.width, canvas.height);
     c.fill()
 }
+
 function getRandomIntBefore255(){
     let randomNumber = Math.floor(Math.random() * 255)
     return randomNumber
@@ -118,15 +119,18 @@ function removeFilters(name, value){
 let animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
 
 function pushPersonsToDraw(personsToDraw, constraintName, constraintValue) {
-    let nbPersons = 0
+
     for(let i = 0; i < datas.length; i++){
         for(filterNames in filters){
             for(filterValues in filters[filterNames]){
-                console.log(filters[filterNames][filterValues])
+                // console.log(filters[filterNames][filterValues])
                 if(filters[filterNames][filterValues] === true){
-                    if(datas[i][constraintName] === constraintValue){
-                        personsToDraw.push(datas[i])
-                        nbPersons++
+                    if(datas[i][filterNames] === filterValues){
+                        let present
+                        present = isPresent(personsToDraw, datas, i)
+                        if(present === false){
+                            personsToDraw.push(datas[i])
+                        }
                     }
                 }
             }
@@ -134,7 +138,7 @@ function pushPersonsToDraw(personsToDraw, constraintName, constraintValue) {
     }
     return personsToDraw
 }
-
+let present
 for(filterNames in filters){
     for(filterValues in filterNames){
         if(filters[filterNames][filterValues] === true){
@@ -145,4 +149,16 @@ for(filterNames in filters){
             }
         }
     }
+}
+
+function isPresent(newPersons, datas, k){
+    let present = false
+    for(let i = 0; i < newPersons.length; i++){
+        // console.log('nouvelle pers id', newPersons[i]["id"])
+        // console.log('id perso actuel', datas[k]["id"])
+        if(newPersons[i]["id"] === datas[k]["id"]){
+            present = true
+        }
+    }
+    return present
 }
