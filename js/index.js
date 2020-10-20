@@ -1,6 +1,10 @@
 let datas = [];
 let filteredDatas = []
+let personsToDraw = []
 let began = false;
+let jointure = false;
+let first = true;
+let etatJointure = false;
 let requestURL = '../datas-pour-tests.json';
 let request = new XMLHttpRequest();
 request.open('GET', requestURL);
@@ -12,21 +16,38 @@ request.onload = function() {
         drawResponse(datas)
     }
     document.addEventListener("click", (e) => {
-        let constraintName = e.target.id
-        let constraintValue = e.target.name
+        let filterName = e.target.id
+        let filterValue = e.target.name
         let isChecked = e.target.checked
-        let personsToDraw = []
-        if(isChecked){
-            began = true
-            addFilters(constraintName, constraintValue)
+        etatJointure = isJointure()
+        if(isChecked && jointure === false){
+            personsToDraw = []
+            addFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-        } else {
-            removeFilters(constraintName, constraintValue)
+        } else if(jointure === false) {
+            personsToDraw = []
+            removeFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
+        } else if(isChecked && jointure === true){
+            // Si on décide de faire des ET dans les filtres
+            if(isFiltersActivated()){
+                console.log('au moins un filtre activé')
+                addFilters(filterName, filterValue)
+                personsToDraw = pushPersonsToDraw(personsToDraw, personsToDraw)
+                // console.log(personsToDraw)
+                drawResponse(personsToDraw)
+            } else {
+                console.log('aucun filtre activé')
+                personsToDraw = []
+                addFilters(filterName, filterValue)
+                personsToDraw = pushPersonsToDraw(personsToDraw, datas)
+                // console.log(personsToDraw)
+                drawResponse(personsToDraw)
+            }
         }
     })
   }
@@ -112,9 +133,8 @@ function pushPersonsToDraw(personsToDraw, datas) {
             for(filterValues in filters[filterNames]){
                 // console.log(filters[filterNames][filterValues])
                 if(filters[filterNames][filterValues] === true){
-                    console.log("bite")
-                    console.log("nom filtre: ", datas[i][filterNames])
-                    console.log("valeur filtre: ", filterValues)
+                    // console.log("nom filtre: ", datas[i][filterNames])
+                    // console.log("valeur filtre: ", filterValues)
                     if(datas[i][filterNames] === filterValues){
                         let present
                         present = isPresent(personsToDraw, datas, i)
@@ -138,3 +158,48 @@ function isPresent(newPersons, datas, indexData){
     }
     return present
 }
+
+function pushWithJointures(datas){
+    let personsWaiting = []
+    for(let i = 0; i < datas.length; i++){
+        for(filterNames in filters){
+            for(filterValues in filters[filterNames]){
+                // console.log(filters[filterNames][filterValues])
+                if(filters[filterNames][filterValues] === true){
+                    // console.log("nom filtre: ", datas[i][filterNames])
+                    // console.log("valeur filtre: ", filterValues)
+                    if(datas[i][filterNames] === filterValues){
+                        let present
+                        present = isPresent(personsToDraw, datas, i)
+                        if(present === false){
+                            personsWaiting.push(datas[i])
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+function isFiltersActivated(){
+    let filtersActivated = false
+    for(filtersNames in filters){
+        for(filterValues in filters[filterNames]){
+            // console.log(filters[filterNames][filterValues])
+            if(filters[filterNames][filterValues] === true){
+                filtersActivated = true
+            }
+        }
+    }
+    return filtersActivated
+}
+
+function isJointure(){
+    let choix = document.querySelector("h1");
+    let classes = choix.classList;
+    choix.onclick = function() {
+        etatJointure = classes.toggle("c");
+    }
+    return etatJointure
+}
+
