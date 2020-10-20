@@ -3,10 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Dataviz</title>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <div class="welcome">
+        <h1 class="welcome-title">TITLE</h1>
+        <img class="welcome-image" src="assets/pikachu.png" alt="">
+        <p class="welcome-explanation">Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim cumque molestias dolor est atque pariatur!</p>
+        <div class="welcome-button"><a href="#main">Commencez l'expérience</a></div>
+    </div>
+
+
+    <div class="container" id="main"> 
+        <div class="menu">
+            <div class="list">
+                <div class="list-element">
+                    <label for="ville">Je suis originaire</label>
+                    <select name="lieu" id="bac-select">
+                        <option value="">--Please choose an option--</option>
+                        <option value="ville">d'une grande ville</option>
+                        <option value="campagne">de la campagne</option>
+                    </select>
+                </div>
+                <div class="list-element">
+                    <p>Je suis </p>
+                    <label for="homme">un homme</label>
+                    <input type="radio" id="homme" name="sexe">
+                    <label for="femme">une femme</label>
+                    <input type="radio" id="femme" name="sexe">
+                </div>
+                <br>
+                <div class="list-element">
+                    <label for="bac">J'ai fait un bac</label>
+                    <select name="bac" id="bac-select">
+                        <option value="">--Please choose an option--</option>
+                        <option value="s">S</option>
+                        <option value="l">L</option>
+                        <option value="es">ES</option>
+                        <option value="techno">Techno</option>
+                        <option value="pro">Pro</option>
+                    </select>
+                </div>
+                
+                <div class="list-element">
+                    <p>Je me suis déjà réorienté.e</p>
+                    <label for="oui">Oui</label>
+                    <input type="radio" id="oui" name="reortientation">
+                    <label for="non">Non</label>
+                    <input type="radio" id="non" name="reortientation">
+                </div>
+                <br>
+                <div class="list-element">
+                    <p>Es-tu épanoui.e dans ce que tu fais actuellement ?</p>
+                    <label for="oui">Oui</label>
+                    <input type="radio" id="oui" name="epanouissement">
+                    <label for="non">Non</label>
+                    <input type="radio" id="non" name="epanouissement">
+                </div>
+                <br>
+            
+                
+            </div>
+        </div>
+        <div class="population">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- <canvas id="canvas"></canvas> -->
     <script src="index.js"></script>
+
+
 </body>
 </html>
