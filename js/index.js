@@ -15,26 +15,16 @@ request.onload = function() {
         let constraintName = e.target.id
         let constraintValue = e.target.name
         let isChecked = e.target.checked
-        let persons = []
         let personsToDraw = []
         if(isChecked){
             began = true
             addFilters(constraintName, constraintValue)
-            personsToDraw = pushPersonsToDraw(personsToDraw, constraintName, constraintValue)
+            personsToDraw = pushPersonsToDraw(personsToDraw)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-            // for(let filterNameCount = 1; filterNameCount <= Object.keys(filters).length; filterNameCount++){
-            //     for(let filterValueCount = 1; filterValueCount <= Object.keys(filters.localisation).length; filterValueCount++){
-            //         if(filters[filterNameCount][filterValueCount] === true){
-
-            //         }
-            //     }
-            // }
-            // persons = addConstraint(datas.length, constraintName, constraintValue, datas)
-            // console.log(persons)
         } else {
             removeFilters(constraintName, constraintValue)
-            personsToDraw = pushPersonsToDraw(personsToDraw, constraintName, constraintValue)
+            personsToDraw = pushPersonsToDraw(personsToDraw)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         }
@@ -116,9 +106,7 @@ function removeFilters(name, value){
     filters[name][value] = false
 }
 
-let animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
-
-function pushPersonsToDraw(personsToDraw, constraintName, constraintValue) {
+function pushPersonsToDraw(personsToDraw) {
 
     for(let i = 0; i < datas.length; i++){
         for(filterNames in filters){
@@ -138,25 +126,11 @@ function pushPersonsToDraw(personsToDraw, constraintName, constraintValue) {
     }
     return personsToDraw
 }
-let present
-for(filterNames in filters){
-    for(filterValues in filterNames){
-        if(filters[filterNames][filterValues] === true){
-            if(datas[i][constraintName] === constraintValue){
-                personsToDraw.push(datas[i])
-                console.log(datas[i])
-                nbPersons++
-            }
-        }
-    }
-}
 
-function isPresent(newPersons, datas, k){
+function isPresent(newPersons, datas, indexData){
     let present = false
     for(let i = 0; i < newPersons.length; i++){
-        // console.log('nouvelle pers id', newPersons[i]["id"])
-        // console.log('id perso actuel', datas[k]["id"])
-        if(newPersons[i]["id"] === datas[k]["id"]){
+        if(newPersons[i]["id"] === datas[indexData]["id"]){
             present = true
         }
     }
