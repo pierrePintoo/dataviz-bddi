@@ -19,12 +19,12 @@ request.onload = function() {
         if(isChecked){
             began = true
             addFilters(constraintName, constraintValue)
-            personsToDraw = pushPersonsToDraw(personsToDraw)
+            personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         } else {
             removeFilters(constraintName, constraintValue)
-            personsToDraw = pushPersonsToDraw(personsToDraw)
+            personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         }
@@ -79,7 +79,7 @@ let filters = {
         "Métropole" : false
     },
     "sexe": {
-        "M": false,
+        "H": false,
         "F": false
     },
     "bac": {
@@ -106,13 +106,15 @@ function removeFilters(name, value){
     filters[name][value] = false
 }
 
-function pushPersonsToDraw(personsToDraw) {
-
+function pushPersonsToDraw(personsToDraw, datas) {
     for(let i = 0; i < datas.length; i++){
         for(filterNames in filters){
             for(filterValues in filters[filterNames]){
                 // console.log(filters[filterNames][filterValues])
                 if(filters[filterNames][filterValues] === true){
+                    console.log("bite")
+                    console.log("nom filtre: ", datas[i][filterNames])
+                    console.log("valeur filtre: ", filterValues)
                     if(datas[i][filterNames] === filterValues){
                         let present
                         present = isPresent(personsToDraw, datas, i)
