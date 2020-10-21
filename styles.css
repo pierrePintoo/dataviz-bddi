@@ -8,12 +8,11 @@ body{
 .welcome{
     width: 100%;
     height: 100vh;
-    /* background-color: #010818; */
-    /* border: solid 20px; */
     background: center #010818 no-repeat url(assets/HUD.svg);
     background-size: 970px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -22,14 +21,14 @@ body{
 
 .welcome-title{
     margin: 0;
-    padding-top: 40px;
+    margin-top: 20px;
     font-size: 2.5rem;
     color: white;
 }
 
 .welcome-image{
     width: 340px;
-    margin-top: 80px;
+    margin-top: 50px;
 }
 
 .welcome-explanation{
@@ -48,14 +47,14 @@ body{
     outline: none;
     cursor: pointer;
     height: 50px;
-    padding: 0 20px;
+    /* padding: 0 20px; */
     margin-top: 20px;
 }
 
 .welcome-button>a {
     color: white;
     text-decoration: none;
-    padding: 10px 10px
+    padding: 15px 20px
 }
 
 .container{
@@ -64,26 +63,58 @@ body{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-around;
     background-color:#010818; 
 }
 
+.filter-container{
+    width: 28%;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.menu-header{
+    width: 100%;
+    height: 70px;
+    background-color: #133A54;
+    border-top: solid #3B8CA1 20px;
+    border-bottom: #516E80 solid 1px;
+}
+
+.menu-header>p {
+    color: white;
+    font-size: 1.8rem;
+    margin-left: 20px;
+    margin-top: 10px;
+    
+}
+
 .menu{
-    width: 25%;
-    height: 85vh;
-    background-color: #010818;
-    margin-left: 15px;
+    width: 100%;
+    height: 100%;
+    border: solid 17px  #133A54;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .list{
-    padding: 30px 20px;
     color: white;
+    font-size: 95%;
+    padding: 10px 10px;
 }
 
 
-
+.population{
+    width: 68%;
+}
 canvas{
     border: solid red 2px;
-    height: 85vh;
+    width: 100%;
+    height: 90vh;
 }
 
 .welcome-image {
