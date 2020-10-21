@@ -3,8 +3,8 @@ let filteredDatas = []
 let personsToDraw = []
 let began = false;
 let first = true;
-let etatJointure = false;
-let requestURL = '../datas-pour-tests.json';
+let etatJointure = true;
+let requestURL = '../datas_mercredi_midi.json';
 let request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
@@ -41,9 +41,8 @@ request.onload = function() {
         }
     })
   }
-
-  let canvas = document.getElementById('canvas')
-  let c = canvas.getContext('2d')  
+let canvas = document.getElementById('canvas')
+let c = canvas.getContext('2d')  
 
 function drawResponse(datas){
     initCanvas()
@@ -85,13 +84,13 @@ function drawAllPersons(datas){
 }
 
 let filters = {
+    "sexe": {
+        "hommes": false,
+        "femmes": false
+    },
     "localisation": {
         "Campagne" : false,
         "Metropole" : false
-    },
-    "sexe": {
-        "H": false,
-        "F": false
     },
     "bac": {
         "L" : false,
@@ -185,7 +184,9 @@ function isPresent(newPersons, datas, indexData){
 // Si la personne respece ce filtre ET les autres filtres
 function pushWithJointures(datas){
     let personsWaiting = []
+    let finalPersons = []
     let isFirstFilter = true
+    let firstFilter
     for(filterNames in filters){
         for(filterValues in filters[filterNames]){
             // console.log(filters[filterNames][filterValues])
@@ -194,37 +195,27 @@ function pushWithJointures(datas){
                 // console.log("valeur filtre: ", filterValues)
                 for(let i = 0; i < datas.length; i++){
                     if(datas[i][filterNames] === filterValues){
-                        console.log("fais une premiere fois", datas[i])
+                        // console.log("fais une premiere fois", filterValues)
                         personsWaiting.push(datas[i])
+                        // console.log('tab en attente : ', personsWaiting)
                     }
                 }
+                firstFilter = filterValues
                 // console.log('premières personnes ajoutées : ', personsWaiting)
                 isFirstFilter = false
             } else if (filters[filterNames][filterValues] === true){ // Si le filtre est au moins le deuxième, je reprends le tableaux de personnes filtrées par les anciens filtres
-                for(let i = 0; i < personsWaiting.length; i++){
-                    if(!(personsWaiting[i][filterNames] === filterValues)){
-                        console.log("personne supp du tableau")
-                        personsWaiting.splice(i, 1)
-                    }
+                for(let y = 0; y < personsWaiting.length; y++){
+                    if (personsWaiting[y][filterNames] === filterValues){
+                        finalPersons.push(personsWaiting[y])
+                    } 
                 }
+                personsWaiting = finalPersons
             }
         }
     }
-    return personsWaiting
-}
-
-function isFiltersActivated(){
-    let filtersActivated = false
-    console.log(filters)
-    for(filterNames in filters){
-        for(filterValues in filters[filterNames]){
-            // console.log(filters[filterNames]," : ", filters[filterNames][filterValues])
-            if(filters[filterNames][filterValues] === true){
-                filtersActivated = true
-            }
-        }
-    }
-    return filtersActivated
+    // console.log('premier filtre : ', firstFilter)
+    // console.log('personnes finales : ', personsWaiting)
+    return finalPersons
 }
 
 function isJointure(){
@@ -237,15 +228,37 @@ function isJointure(){
 }
 
 function listenFilters(){
+    let activatedFilters = []
     let inputs = []
+    let options = []
     inputs = document.querySelectorAll("input")
-    for(let i = 0; i < inputs.length; i++){
-        // console.log(filters)
-        if(inputs[i].checked){
-            filters[inputs[i].attributes["name"].value][inputs[i].attributes["value"].value] = true
-        } else if (inputs[i].checked === false){
-            filters[inputs[i].attributes["name"].value][inputs[i].attributes["value"].value] = false
-        } 
+    options = document.querySelectorAll("option")
+    activatedFilters.push(inputs)
+    activatedFilters.push(options)
+
+    for(let j = 0; j < activatedFilters.length; j++){
+        if(j == 0){
+            // Si c'est un élément input radio
+            for(let i = 0; i < activatedFilters[j].length; i++){
+                console.log(activatedFilters[j])
+                if(activatedFilters[j][i].checked){
+                    filters[activatedFilters[j][i].attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = true
+                } else if (activatedFilters[j][i].checked === false){
+                    filters[activatedFilters[j][i].attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = false
+                } 
+            }
+        } else if (j == 1){
+            // Si c'est une boite option dans un select
+            for(let i = 0; i < activatedFilters[j].length; i++){
+                // console.log(filters)
+                if(activatedFilters[j][i].selected){
+                    filters[activatedFilters[j][i].parentNode.attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = true
+                } else if (activatedFilters[j][i].selected === false){
+                    filters[activatedFilters[j][i].parentNode.attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = false
+                } 
+            }
+        }
     }
+
     console.log(filters)
 }

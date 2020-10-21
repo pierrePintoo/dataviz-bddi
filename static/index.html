@@ -11,22 +11,47 @@
     <div id="choix_jointures">
         <h1 type="checkbox" id="jointure">Joindre</h1>
     </div>
-    <div class="filtres">
+    <div class="filtres filtres__1">
         <form>
-            <input type="radio" value="Campagne" name="localisation">Campagne</input>
+
+            <select name="localisation">
+                <option value="Campagne">Campagne</option>
+                <option value="Metropole">Métropole</option>
+            </select>
+        </form>
+    </div>
+    <div class="filtres filtres__2">
+        <form>
+            <input type="radio" value="hommes" name="sexe">Hommes</input>
             <br>
-            <input type="radio" value="Métropole" name="localisation">Métropole</input>
+            <input type="radio" value="femmes" name="sexe">Femmes</input>
             <br>
         </form>
     </div>
-    <div class="sexe">
+    <!-- <div class="filtres filtres__3">
         <form>
-            <input type="radio" value="H" name="sexe">Hommes</input>
+            <input type="radio" value="jdns" name="jkdsq">jdnsommes</input>
             <br>
-            <input type="radio" value="F" name="sexe">Femmes</input>
+            <input type="radio" value="dsiond" name="jkdsq">Femmes</input>
             <br>
         </form>
     </div>
+    <div class="filtres filtres__4">
+        <form>
+            <input type="radio" value="jdns" name="jkdsq">jdnsommes</input>
+            <br>
+            <input type="radio" value="dsiond" name="jkdsq">Femmes</input>
+            <br>
+        </form>
+    </div>
+    <div class="filtres filtres__5">
+        <form>
+            <input type="radio" value="jdns" name="jkdsq">jdnsommes</input>
+            <br>
+            <input type="radio" value="dsiond" name="jkdsq">Femmes</input>
+            <br>
+        </form>
+    </div> -->
     <canvas id="canvas"></canvas>
     <script src="../js/index.js"></script>
     <script src="../js/interactions.js"></script>
