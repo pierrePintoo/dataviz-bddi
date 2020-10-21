@@ -12,14 +12,20 @@
         <h1 type="checkbox" id="jointure">Joindre</h1>
     </div>
     <div class="filtres">
-        <input type="checkbox" name="Campagne" id="localisation">Campagne</input>
-        <br>
-        <input type="checkbox" name="Métropole" id="localisation">Métropole</input>
-        <br>
-        <input type="checkbox" name="H" id="sexe">Hommes</input>
-        <br>
-        <input type="checkbox" name="F" id="sexe">Femmes</input>
-        <br>
+        <form>
+            <input type="radio" value="Campagne" name="localisation">Campagne</input>
+            <br>
+            <input type="radio" value="Métropole" name="localisation">Métropole</input>
+            <br>
+        </form>
+    </div>
+    <div class="sexe">
+        <form>
+            <input type="radio" value="H" name="sexe">Hommes</input>
+            <br>
+            <input type="radio" value="F" name="sexe">Femmes</input>
+            <br>
+        </form>
     </div>
     <canvas id="canvas"></canvas>
     <script src="../js/index.js"></script>

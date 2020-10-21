@@ -22,21 +22,22 @@ request.onload = function() {
         etatJointure = isJointure()
         listenFilters()
         // console.log(isChecked, etatJointure)
-        if(isChecked && etatJointure === false){
-            console.log("jointure desactivé bite")
+        if(etatJointure === false){
+            // console.log("jointure desactivé bite")
             personsToDraw = []
             // addFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         } else if(etatJointure === false) {
-            console.log("jointure desactivé bite2")
+            // console.log("jointure desactivé bite2")
             personsToDraw = []
             // removeFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-        } else if(etatJointure === true && isChecked){
+        } else if(etatJointure === true){
+            console.log('jointure activé')
             // isFiltersActivated()
             // console.log("y'a t'il au moins un filtre activé ? : ", isFiltersActivated())
             // Si on décide de faire des ET dans les filtres
@@ -157,7 +158,7 @@ function pushPersonsToDraw(personsToDraw, datas) {
 function isPresent(newPersons, datas, indexData){
     let present = false
     for(let i = 0; i < newPersons.length; i++){
-        if(newPersons[i]["id"] === datas[indexData]["id"]){
+        if(newPersons[i]["name"] === datas[indexData]["name"]){
             present = true
         }
     }
@@ -176,26 +177,16 @@ function pushWithJointures(datas){
                 // console.log("valeur filtre: ", filterValues)
                 for(let i = 0; i < datas.length; i++){
                     if(datas[i][filterNames] === filterValues){
-                        let present
-                        present = isPresent(personsWaiting, datas, i)
-                        if(present === false){
-                            personsWaiting.push(datas[i])
-                        }
+                        console.log("fais une premiere fois", datas[i])
+                        personsWaiting.push(datas[i])
                     }
                 }
                 // console.log('premières personnes ajoutées : ', personsWaiting)
                 isFirstFilter = false
             } else if (filters[filterNames][filterValues] === true){ // Si le filtre est au moins le deuxième, je reprends le tableaux de personnes filtrées par les anciens filtres
                 for(let i = 0; i < personsWaiting.length; i++){
-                    if(personsWaiting[i][filterNames] === filterValues){
-                        // let present
-                        // present = isPresent(personsWaiting, datas, i)
-                        // if(present === false){
-                        //     personsWaiting.push(personsWaiting[i])
-                        // }
-                        // console.log("ezoezezz")
-                    } else {
-                        console.log("personne supprimée : ", personsWaiting[i])
+                    if(!(personsWaiting[i][filterNames] === filterValues)){
+                        console.log("personne supp du tableau")
                         personsWaiting.splice(i, 1)
                     }
                 }
@@ -232,11 +223,12 @@ function listenFilters(){
     let inputs = []
     inputs = document.querySelectorAll("input")
     for(let i = 0; i < inputs.length; i++){
-        console.log(filters)
+        // console.log(filters)
         if(inputs[i].checked){
-            filters[inputs[i].attributes["id"].value][inputs[i].attributes["name"].value] = true
+            filters[inputs[i].attributes["name"].value][inputs[i].attributes["value"].value] = true
         } else if (inputs[i].checked === false){
-            filters[inputs[i].attributes["id"].value][inputs[i].attributes["name"].value] = false
+            filters[inputs[i].attributes["name"].value][inputs[i].attributes["value"].value] = false
         } 
     }
+    console.log(filters)
 }
