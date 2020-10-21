@@ -7,12 +7,34 @@ body {
 }
 .filtres {
   position: absolute;
+}
+.filtres__1 {
   transform: translateY(5em);
 }
-.sexe {
-  position: absolute;
+.filtres__2 {
   transform: translateY(10em);
 }
+.filtres__3 {
+  transform: translateY(15em);
+}
+.filtres__4 {
+  transform: translateY(20em);
+}
+.filtres__5 {
+  transform: translateY(25em);
+}
+.filtres__6 {
+  transform: translateY(30em);
+}
+.filtres__7 {
+  transform: translateY(35em);
+}
+.filtres__8 {
+  transform: translateY(40em);
+}
 #choix_jointures {
+  position: absolute;
+}
+#validation {
   position: absolute;
 }

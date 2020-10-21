@@ -14,7 +14,7 @@ request.onload = function() {
     if(began === false){
         drawResponse(datas)
     }
-    document.addEventListener("click", (e) => {
+    document.getElementById('validation').addEventListener("click", (e) => {
         let filterName = e.target.id
         let filterValue = e.target.name
         let isChecked = e.target.checked
@@ -93,9 +93,9 @@ let filters = {
         "Metropole" : false
     },
     "bac": {
-        "L" : false,
+        "S" : false,
         "ES": false,
-        "S": false,
+        "L": false,
         "Techno": false,
         "Pro": false
     },
@@ -252,6 +252,9 @@ function listenFilters(){
             for(let i = 0; i < activatedFilters[j].length; i++){
                 // console.log(filters)
                 if(activatedFilters[j][i].selected){
+                    if(filters[activatedFilters[j][i].parentNode.attributes["name"].value][activatedFilters[j][i].attributes["value"].value] == "ES"){
+                        console.log('ha gros c\'est true')
+                    }
                     filters[activatedFilters[j][i].parentNode.attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = true
                 } else if (activatedFilters[j][i].selected === false){
                     filters[activatedFilters[j][i].parentNode.attributes["name"].value][activatedFilters[j][i].attributes["value"].value] = false
