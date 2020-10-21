@@ -87,7 +87,7 @@ function drawAllPersons(datas){
 let filters = {
     "localisation": {
         "Campagne" : false,
-        "Métropole" : false
+        "Metropole" : false
     },
     "sexe": {
         "H": false,
@@ -96,16 +96,48 @@ let filters = {
     "bac": {
         "L" : false,
         "ES": false,
-        "S": false
+        "S": false,
+        "Techno": false,
+        "Pro": false
     },
     "avenir_lycee": 
     {
         "Oui": false,
         "Non": false
     },
-    "premiere_idee": {
+    "premiere_idee_etudes": {
         "Oui" : false,
         "Non" : false
+    },
+    "influences" : {
+        "Personne": false,
+        "Amis": false,
+        "parents": false,
+        "Autre": false
+    },
+    "reorientation" : {
+        "Oui" : false,
+        "Non" : false
+    },
+    "epanoui":{
+        "Oui" : false,
+        "Non" : false
+    },
+    "changement_etudes" : {
+        "Oui" : false,
+        "Non" : false
+    },
+    "reco_etudes" : {
+        "Oui" : false,
+        "Non" : false        
+    },
+    "jeux_videos" : {
+        "Oui" : false,
+        "Non" : false        
+    },
+    "vision_dix_ans" : {
+        "CDI" : false,
+        "Freelance" : false
     }
 }    
 
@@ -196,10 +228,10 @@ function isFiltersActivated(){
 }
 
 function isJointure(){
-    let choix = document.querySelector("h1");
-    let classes = choix.classList;
+    let choix = document.querySelector("h1")
+    let classes = choix.classList
     choix.onclick = function() {
-        etatJointure = classes.toggle("c");
+        etatJointure = classes.toggle("c")
     }
     return etatJointure
 }
