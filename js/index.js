@@ -3,7 +3,7 @@ let filteredDatas = []
 let personsToDraw = []
 let began = false;
 let first = true;
-let etatJointure = true;
+let etatJointure = false;
 let requestURL = '../datas_mercredi_midi.json';
 let request = new XMLHttpRequest();
 request.open('GET', requestURL);
@@ -174,7 +174,7 @@ function pushPersonsToDraw(personsToDraw, datas) {
 function isPresent(newPersons, datas, indexData){
     let present = false
     for(let i = 0; i < newPersons.length; i++){
-        if(newPersons[i]["id"] === datas[indexData]["id"]){
+        if(newPersons[i]["Horodateur"] === datas[indexData]["Horodateur"]){
             present = true
         }
     }
@@ -217,6 +217,31 @@ function pushWithJointures(datas){
     // console.log('personnes finales : ', personsWaiting)
     return finalPersons
 }
+
+function pushToDraw(datas){
+    let personsWaiting = []
+    let finalPersons = []
+    for(filterNames in filters){
+        for(filterValues in filters[filterNames]){
+            // console.log(filters[filterNames][filterValues])
+            if(filters[filterNames][filterValues] === true){ // Si c'est filtre est le premier,  je teste toutes les personnes sous ce filtre
+                // console.log("nom filtre: ", datas[i][filterNames])
+                // console.log("valeur filtre: ", filterValues)
+                for(let i = 0; i < datas.length; i++){
+                    if(datas[i][filterNames] === filterValues){
+                        // console.log("fais une premiere fois", filterValues)
+                        personsWaiting.push(datas[i])
+                        console.log('personne ajoutée : ', datas[i])
+                    }
+                }
+            }
+        }
+    }
+    // console.log('premier filtre : ', firstFilter)
+    // console.log('personnes finales : ', personsWaiting)
+    return personsWaiting
+}
+
 
 function isJointure(){
     let choix = document.querySelector("h1")
@@ -265,3 +290,30 @@ function listenFilters(){
 
     console.log(filters)
 }
+
+// function pushOptimized(targetName, targetValue, datas){
+//     let personsWaiting = []
+//     let personsWaitingSave = []
+//     let finalPersons = []
+//     let firstTime = true
+//     if(firstTime){
+//         for(let i = 0; i < datas.length; i++){
+//             if(datas[i][targetName] === targetValue){
+//                 // console.log("fais une premiere fois", filterValues)
+//                 personsWaiting.push(datas[i])
+//                 // console.log('tab en attente : ', personsWaiting)
+//             }
+//         }
+//         personsWaitingSave = personsWaiting
+//         firstTime = false
+//     } else {
+//         for(let i = 0; i < personsWaiting.length; i++){
+//             if(personsWaiting[i][targetName] === targetValue){
+//                 // console.log("fais une premiere fois", filterValues)
+//                 finalPersons.push(personsWaiting[i])
+//                 // console.log('tab en attente : ', personsWaiting)
+//             }
+//         }
+//         personsWaiting = finalPersons
+//     }
+// }
