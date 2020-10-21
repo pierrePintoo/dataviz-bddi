@@ -4,7 +4,7 @@ let personsToDraw = []
 let began = false;
 let jointure = false;
 let first = true;
-let etatJointure = false;
+let etatJointure = true;
 let requestURL = '../datas-pour-tests.json';
 let request = new XMLHttpRequest();
 request.open('GET', requestURL);
@@ -20,34 +20,37 @@ request.onload = function() {
         let filterValue = e.target.name
         let isChecked = e.target.checked
         etatJointure = isJointure()
-        if(isChecked && jointure === false){
+        // console.log(isChecked, etatJointure)
+        if(isChecked && etatJointure === false){
+            console.log("jointure desactivé bite")
             personsToDraw = []
             addFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-        } else if(jointure === false) {
+        } else if(etatJointure === false) {
+            console.log("jointure desactivé bite2")
             personsToDraw = []
             removeFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-        } else if(isChecked && jointure === true){
+        } else if(etatJointure === true && isChecked){
+            // isFiltersActivated()
+            // console.log("y'a t'il au moins un filtre activé ? : ", isFiltersActivated())
             // Si on décide de faire des ET dans les filtres
-            if(isFiltersActivated()){
-                console.log('au moins un filtre activé')
-                addFilters(filterName, filterValue)
-                personsToDraw = pushPersonsToDraw(personsToDraw, personsToDraw)
-                // console.log(personsToDraw)
-                drawResponse(personsToDraw)
-            } else {
-                console.log('aucun filtre activé')
-                personsToDraw = []
-                addFilters(filterName, filterValue)
-                personsToDraw = pushPersonsToDraw(personsToDraw, datas)
-                // console.log(personsToDraw)
-                drawResponse(personsToDraw)
-            }
+            // console.log('au moins un filtre activé')
+            addFilters(filterName, filterValue)
+            personsToDraw = pushWithJointures(datas)
+            console.log(personsToDraw)
+            drawResponse(personsToDraw)
+        } else if (etatJointure === true){
+            // Quand j'enlève un filtre et que la jointure est à true.
+            removeFilters(filterName, filterValue)
+            personsToDraw = []
+            personsToDraw = pushWithJointures(datas)
+            console.log(personsToDraw)
+            drawResponse(personsToDraw)
         }
     })
   }
@@ -86,7 +89,7 @@ function drawAllPersons(datas){
         }
         c.beginPath()
         randomInt = getRandomIntBefore255()
-        c.fillStyle = `rgba(${randomInt}, 0, 0, 1)`;
+        c.fillStyle = `rgba(155, 0, 0, 1)`;
         c.arc(x, y, r, 0, Math.PI * 2)
         c.fill()
         c.closePath()
@@ -161,31 +164,50 @@ function isPresent(newPersons, datas, indexData){
 
 function pushWithJointures(datas){
     let personsWaiting = []
-    for(let i = 0; i < datas.length; i++){
-        for(filterNames in filters){
-            for(filterValues in filters[filterNames]){
-                // console.log(filters[filterNames][filterValues])
-                if(filters[filterNames][filterValues] === true){
-                    // console.log("nom filtre: ", datas[i][filterNames])
-                    // console.log("valeur filtre: ", filterValues)
+    let isFirstFilter = true
+    for(filterNames in filters){
+        for(filterValues in filters[filterNames]){
+            // console.log(filters[filterNames][filterValues])
+            if(filters[filterNames][filterValues] === true && isFirstFilter){
+                // console.log("nom filtre: ", datas[i][filterNames])
+                // console.log("valeur filtre: ", filterValues)
+                for(let i = 0; i < datas.length; i++){
                     if(datas[i][filterNames] === filterValues){
                         let present
-                        present = isPresent(personsToDraw, datas, i)
+                        present = isPresent(personsWaiting, datas, i)
                         if(present === false){
                             personsWaiting.push(datas[i])
                         }
                     }
                 }
+                // console.log('premières personnes ajoutées : ', personsWaiting)
+                isFirstFilter = false
+            } else if (filters[filterNames][filterValues] === true){
+                for(let i = 0; i < personsWaiting.length; i++){
+                    if(personsWaiting[i][filterNames] === filterValues){
+                        // let present
+                        // present = isPresent(personsWaiting, datas, i)
+                        // if(present === false){
+                        //     personsWaiting.push(personsWaiting[i])
+                        // }
+                        // console.log("ezoezezz")
+                    } else {
+                        console.log("personne supprimée : ", personsWaiting[i])
+                        personsWaiting.splice(i, 1)
+                    }
+                }
             }
         }
     }
+    return personsWaiting
 }
 
 function isFiltersActivated(){
     let filtersActivated = false
-    for(filtersNames in filters){
+    console.log(filters)
+    for(filterNames in filters){
         for(filterValues in filters[filterNames]){
-            // console.log(filters[filterNames][filterValues])
+            // console.log(filters[filterNames]," : ", filters[filterNames][filterValues])
             if(filters[filterNames][filterValues] === true){
                 filtersActivated = true
             }
