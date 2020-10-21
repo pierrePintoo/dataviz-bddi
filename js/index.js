@@ -2,9 +2,8 @@ let datas = [];
 let filteredDatas = []
 let personsToDraw = []
 let began = false;
-let jointure = false;
 let first = true;
-let etatJointure = true;
+let etatJointure = false;
 let requestURL = '../datas-pour-tests.json';
 let request = new XMLHttpRequest();
 request.open('GET', requestURL);
@@ -29,13 +28,6 @@ request.onload = function() {
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
-        } else if(etatJointure === false) {
-            // console.log("jointure desactivé bite2")
-            personsToDraw = []
-            // removeFilters(filterName, filterValue)
-            personsToDraw = pushPersonsToDraw(personsToDraw, datas)
-            console.log(personsToDraw)
-            drawResponse(personsToDraw)
         } else if(etatJointure === true){
             console.log('jointure activé')
             // isFiltersActivated()
@@ -43,13 +35,6 @@ request.onload = function() {
             // Si on décide de faire des ET dans les filtres
             // console.log('au moins un filtre activé')
             // addFilters(filterName, filterValue)
-            personsToDraw = pushWithJointures(datas)
-            console.log(personsToDraw)
-            drawResponse(personsToDraw)
-        } else if (etatJointure === true){
-            // Quand j'enlève un filtre et que la jointure est à true.
-            // removeFilters(filterName, filterValue)
-            personsToDraw = []
             personsToDraw = pushWithJointures(datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
@@ -158,7 +143,7 @@ function pushPersonsToDraw(personsToDraw, datas) {
 function isPresent(newPersons, datas, indexData){
     let present = false
     for(let i = 0; i < newPersons.length; i++){
-        if(newPersons[i]["name"] === datas[indexData]["name"]){
+        if(newPersons[i]["id"] === datas[indexData]["id"]){
             present = true
         }
     }
