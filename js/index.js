@@ -20,18 +20,19 @@ request.onload = function() {
         let filterValue = e.target.name
         let isChecked = e.target.checked
         etatJointure = isJointure()
+        listenFilters()
         // console.log(isChecked, etatJointure)
         if(isChecked && etatJointure === false){
             console.log("jointure desactivé bite")
             personsToDraw = []
-            addFilters(filterName, filterValue)
+            // addFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         } else if(etatJointure === false) {
             console.log("jointure desactivé bite2")
             personsToDraw = []
-            removeFilters(filterName, filterValue)
+            // removeFilters(filterName, filterValue)
             personsToDraw = pushPersonsToDraw(personsToDraw, datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
@@ -40,13 +41,13 @@ request.onload = function() {
             // console.log("y'a t'il au moins un filtre activé ? : ", isFiltersActivated())
             // Si on décide de faire des ET dans les filtres
             // console.log('au moins un filtre activé')
-            addFilters(filterName, filterValue)
+            // addFilters(filterName, filterValue)
             personsToDraw = pushWithJointures(datas)
             console.log(personsToDraw)
             drawResponse(personsToDraw)
         } else if (etatJointure === true){
             // Quand j'enlève un filtre et que la jointure est à true.
-            removeFilters(filterName, filterValue)
+            // removeFilters(filterName, filterValue)
             personsToDraw = []
             personsToDraw = pushWithJointures(datas)
             console.log(personsToDraw)
@@ -130,6 +131,7 @@ function removeFilters(name, value){
     filters[name][value] = false
 }
 
+// Si la personne respecte AU MOINS un filtre. 
 function pushPersonsToDraw(personsToDraw, datas) {
     for(let i = 0; i < datas.length; i++){
         for(filterNames in filters){
@@ -162,13 +164,14 @@ function isPresent(newPersons, datas, indexData){
     return present
 }
 
+// Si la personne respece ce filtre ET les autres filtres
 function pushWithJointures(datas){
     let personsWaiting = []
     let isFirstFilter = true
     for(filterNames in filters){
         for(filterValues in filters[filterNames]){
             // console.log(filters[filterNames][filterValues])
-            if(filters[filterNames][filterValues] === true && isFirstFilter){
+            if(filters[filterNames][filterValues] === true && isFirstFilter){ // Si c'est filtre est le premier,  je teste toutes les personnes sous ce filtre
                 // console.log("nom filtre: ", datas[i][filterNames])
                 // console.log("valeur filtre: ", filterValues)
                 for(let i = 0; i < datas.length; i++){
@@ -182,7 +185,7 @@ function pushWithJointures(datas){
                 }
                 // console.log('premières personnes ajoutées : ', personsWaiting)
                 isFirstFilter = false
-            } else if (filters[filterNames][filterValues] === true){
+            } else if (filters[filterNames][filterValues] === true){ // Si le filtre est au moins le deuxième, je reprends le tableaux de personnes filtrées par les anciens filtres
                 for(let i = 0; i < personsWaiting.length; i++){
                     if(personsWaiting[i][filterNames] === filterValues){
                         // let present
@@ -225,3 +228,15 @@ function isJointure(){
     return etatJointure
 }
 
+function listenFilters(){
+    let inputs = []
+    inputs = document.querySelectorAll("input")
+    for(let i = 0; i < inputs.length; i++){
+        console.log(filters)
+        if(inputs[i].checked){
+            filters[inputs[i].attributes["id"].value][inputs[i].attributes["name"].value] = true
+        } else if (inputs[i].checked === false){
+            filters[inputs[i].attributes["id"].value][inputs[i].attributes["name"].value] = false
+        } 
+    }
+}
