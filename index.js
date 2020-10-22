@@ -6,10 +6,20 @@ request.send();
 request.onload = function() {
   }
 
-  
+
 $(function() {
-  $('a').on('click', function(e) {
-    e.preventDefault();
-    $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
+
+  $(".container").hide();
+  $(".data").hide();
+
+  $(".welcome-button").click(function(){
+    $(".welcome").fadeOut(900);
+    setTimeout(function(){ $(".container").fadeIn(700); }, 1000);
+    setTimeout(function(){ $(".data").fadeIn(700); }, 1000);
+
   });
+
+  
 });
+
+
